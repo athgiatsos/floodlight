@@ -55,6 +55,8 @@ public class LBPool {
 	protected final static short ROUND_ROBIN = 1;
 	protected final static short STATISTICS = 2;
 	protected final static short WEIGHTED_RR = 3;
+	//giatsos
+	protected final static short RATIO = 4;
 
 	protected String vipId;
 
@@ -75,15 +77,22 @@ public class LBPool {
 	}
 
 	public String pickMember(IPClient client, HashMap<String,U64> membersBandwidth,HashMap<String,Short> membersWeight) {
+		log.info("members.size() {}",members.size());
 
 		// Get the members that belong to this pool and the statistics for them
 		if(members.size() > 0){
-			if (lbMethod == STATISTICS && !membersBandwidth.isEmpty() && membersBandwidth.values() !=null) {	
+			log.info("lbMethod {}",lbMethod);
+			log.info("membersBandwidth.isEmpty() {}",membersBandwidth.isEmpty());
+			log.info("membersBandwidth.values() {}",membersBandwidth.values());
+			log.info("membersWeight.isEmpty() {}",membersWeight.isEmpty());
+			
+			if (lbMethod == STATISTICS && !membersBandwidth.isEmpty() && membersBandwidth.values() !=null) {
 				ArrayList<String> poolMembersId = new ArrayList<String>();
 				for(String memberId: membersBandwidth.keySet()){
 					for(int i=0;i<members.size();i++){
 						if(members.get(i).equals(memberId)){
 							poolMembersId.add(memberId);
+							log.info("{} memberId {}", i, memberId);
 						}
 					}
 				}
@@ -94,7 +103,7 @@ public class LBPool {
 					for(int j=0;j<poolMembersId.size();j++){
 						bandwidthValues.add(membersBandwidth.get(poolMembersId.get(j)));
 					}
-					log.debug("Member picked using LB statistics: {}", poolMembersId.get(bandwidthValues.indexOf(Collections.min(bandwidthValues))));
+					log.info("Member picked using LB statistics: {}", poolMembersId.get(bandwidthValues.indexOf(Collections.min(bandwidthValues))));
 					return poolMembersId.get(bandwidthValues.indexOf(Collections.min(bandwidthValues)));
 				}
 				return null;
@@ -105,19 +114,61 @@ public class LBPool {
 				for(Short weight: membersWeight.values()){
 					totalWeight += weight;
 				}
+				log.info("totalWeight {}",totalWeight);
 				int rand = randomNumb.nextInt(totalWeight);
+				log.info("rand {}",rand);
 				short val = 0;
 				for(String memberId: membersWeight.keySet()){
 					val += membersWeight.get(memberId);
+					log.info("val {}",val);
 					if(val > rand){
-						log.debug("Member picked using WRR: {}",memberId);
+						log.info("Member picked using WRR: {}",memberId);
 						return memberId;
 					}
 				}
 				return null;
+//giatsos
+			} else if(lbMethod == RATIO && !membersWeight.isEmpty()){
+				log.info("mpike!!!");
+				
+				Boolean computed = false;
+				
+				if (computed = false) {
+					short totalWeight = 0; 
+
+					for(Short weight: membersWeight.values()){
+						totalWeight += weight;
+					}
+					log.info("totalWeight {}",totalWeight);
+					if (totalWeight >10 || totalWeight <10 ) {
+						//normalize
+						log.info("normalizing...");
+					}
+					else {
+						log.info("total weight OK! go on with calc");
+						
+					}
+					//change flag computed, now the next 10 destinations have been decided
+					computed = true;
+				}
+				else {
+					//epistrefei ton host
+					short counter = 0;
+					if (computed = true){
+						//log.info("Member picked using RATIO: {}",total[counter])
+						//return total[counter]
+						counter++;
+						if (counter>10){
+							computed = false;
+						}
+					}
+				}
+				return null;
+//giatsos
 			}else {
 				// simple round robin
 				previousMemberIndex = (previousMemberIndex + 1) % members.size();
+				log.info("Member picked using simple round robin: {}",previousMemberIndex);
 				return members.get(previousMemberIndex);
 			}
 		}

@@ -130,11 +130,17 @@ public class PoolsResource extends ServerResource {
             if (n.equals("lb_method")) {
             	String method = jp.getText();
             	if(method.equalsIgnoreCase("RR")){
+			log.info("lb method = RR");
             		pool.lbMethod = (short) 1;
             	} else if(method.equalsIgnoreCase("STATISTICS")){
+			log.info("lb method = STATISTICS");
             		pool.lbMethod = (short) 2;
             	} else if(method.equalsIgnoreCase("WRR")){
+			log.info("lb method = WRR");
             		pool.lbMethod = (short) 3;
+                } else if(method.equalsIgnoreCase("RATIO")){
+			log.info("lb method = RATIO");
+            		pool.lbMethod = (short) 4;
             	}
             		
                 continue;
