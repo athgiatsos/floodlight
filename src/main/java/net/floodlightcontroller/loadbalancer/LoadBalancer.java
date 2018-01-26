@@ -562,7 +562,7 @@ ILoadBalancerService, IOFMessageListener {
 
 				OFFlowMod.Builder fmb = pinSwitch.getOFFactory().buildFlowAdd();
 
-				fmb.setIdleTimeout(FlowModUtils.INFINITE_TIMEOUT);
+				fmb.setIdleTimeout(300); //INFINITE_TIMEOUT
 				fmb.setHardTimeout(FlowModUtils.INFINITE_TIMEOUT);
 				fmb.setBufferId(OFBufferId.NO_BUFFER);
 				fmb.setOutPort(OFPort.ANY);
