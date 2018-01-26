@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.util.List;
 
 import net.floodlightcontroller.loadbalancer.LoadBalancer.IPClient;
 
@@ -147,19 +148,20 @@ public class LBPool {
 					else {
 						log.info("total weight OK! go on with calc");
 						//gia olous tous members get id
-						/*for(String memberId: membersWeight.keySet()){
+						for(String memberId: membersWeight.keySet()){
 							//create list for each member
-							List membersWeight.get(memberId) = new ArrayList();
+							List array(membersWeight.get(memberId)) = new ArrayList();
 							for(int i=0; i<membersWeight.values(); i++){
+							//for(Short weight: membersWeight.values()){
 								//gemizoume thn lista tou kathena me to id tou
-								membersWeight.get(memberId).add(membersWeight.get(memberId));
+								array(membersWeight.get(memberId)).add(membersWeight.get(memberId));
 							}
-						}*/
+						}
 					}
 
 					//exoume listes me ta ids twn members
 					//kanoume mia nea lista pou tha valoume oles tis parapanw
-					/*List total = new ArrayList();
+					/*List<Short> total = new ArrayList();
 					//loop through all members
 					for(String memberId: membersWeight.keySet()){
 						//pairnoume thn lista tou kathenos kai thn prosthetoume
