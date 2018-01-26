@@ -171,11 +171,7 @@ public class LBPool {
 
 					//print list
 					for(int i = 0; i < total.size(); i++){
-<<<<<<< Updated upstream
-						log.info("final order {} , {}", i, total.get(i))
-=======
 						log.info("final order {} , {}", i, total.get(i));
->>>>>>> Stashed changes
 					}
 
 					//change flag computed, now the next 10 destinations have been decided
