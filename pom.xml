@@ -5,7 +5,7 @@
 	<groupId>org.projectfloodlight</groupId>
 	<artifactId>floodlight</artifactId>
 	<version>1.2-SNAPSHOT</version>
-	<name>floodlight</name>
+	<name>giatsos/floodlight</name>
 	<repositories>
 		<repository>
 			<id>maven-restlet</id>
