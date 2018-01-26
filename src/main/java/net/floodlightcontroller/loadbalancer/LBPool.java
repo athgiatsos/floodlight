@@ -147,19 +147,19 @@ public class LBPool {
 					else {
 						log.info("total weight OK! go on with calc");
 						//gia olous tous members get id
-						for(String memberId: membersWeight.keySet()){
+						/*for(String memberId: membersWeight.keySet()){
 							//create list for each member
 							List membersWeight.get(memberId) = new ArrayList();
 							for(int i=0; i<membersWeight.values(); i++){
 								//gemizoume thn lista tou kathena me to id tou
 								membersWeight.get(memberId).add(membersWeight.get(memberId));
 							}
-						}
+						}*/
 					}
 
 					//exoume listes me ta ids twn members
 					//kanoume mia nea lista pou tha valoume oles tis parapanw
-					List total = new ArrayList();
+					/*List total = new ArrayList();
 					//loop through all members
 					for(String memberId: membersWeight.keySet()){
 						//pairnoume thn lista tou kathenos kai thn prosthetoume
@@ -172,10 +172,10 @@ public class LBPool {
 					//print list
 					for(int i = 0; i < total.size(); i++){
 						log.info("final order {} , {}", i, total.get(i));
-					}
+					}*/
 
 					//change flag computed, now the next 10 destinations have been decided
-					computed = true;
+					//computed = true;
 				}
 				else {
 					//epistrefei ton host
