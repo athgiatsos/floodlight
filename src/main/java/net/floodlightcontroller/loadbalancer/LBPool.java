@@ -162,7 +162,7 @@ public class LBPool {
 
 					//exoume listes me ta ids twn members
 					//kanoume mia nea lista pou tha valoume oles tis parapanw
-					/*List<Short> total = new ArrayList();
+					/*List total = new ArrayList();
 					//loop through all members
 					for(String memberId: membersWeight.keySet()){
 						//pairnoume thn lista tou kathenos kai thn prosthetoume
