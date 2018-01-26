@@ -151,9 +151,10 @@ public class LBPool {
 						for(String memberId: membersWeight.keySet()){
 							//create list for each member
 							List array(membersWeight.get(memberId)) = new ArrayList();
-							for(int i=0; i<membersWeight.values(); i++){
-							//for(Short weight: membersWeight.values()){
+							//for(int i=0; i<membersWeight.values(); i++){
+							for(Short weight: membersWeight.values()){
 								//gemizoume thn lista tou kathena me to id tou
+                                                                log.info("weight {}", weight );
 								array(membersWeight.get(memberId)).add(membersWeight.get(memberId));
 							}
 						}
