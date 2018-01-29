@@ -148,7 +148,7 @@ public class LBPool {
 					else {
 						log.info("total weight OK! go on with calc");
 						//gia olous tous members get id
-						for(String memberId: membersWeight.keySet()){
+						/*for(String memberId: membersWeight.keySet()){
 							//create list for each member
 							List array(membersWeight.get(memberId)) = new ArrayList();
 							//for(int i=0; i<membersWeight.values(); i++){
@@ -157,7 +157,7 @@ public class LBPool {
                                                                 log.info("weight {}", weight );
 								array(membersWeight.get(memberId)).add(membersWeight.get(memberId));
 							}
-						}
+						}*/
 					}
 
 					//exoume listes me ta ids twn members
