@@ -245,6 +245,13 @@ ILoadBalancerService, IOFMessageListener {
 							memberWeights.put(memberId,members.get(memberId).weight);
 						}
 					}
+//giatsos
+					//new RATIO based load balancing algorithm
+					if(pool.lbMethod == LBPool.RATIO){
+						for(String memberId: pool.members){
+							memberWeights.put(memberId,members.get(memberId).weight);
+						}
+					}
 					// Switch statistics collection
 					if(pool.lbMethod == LBPool.STATISTICS && statisticsService != null)
 						memberPortBandwidth = collectSwitchPortBandwidth();
