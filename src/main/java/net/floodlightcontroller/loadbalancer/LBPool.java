@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.List;
+import java.util.ArrayList;
 
 import net.floodlightcontroller.loadbalancer.LoadBalancer.IPClient;
 
@@ -58,10 +59,15 @@ public class LBPool {
 	protected final static short WEIGHTED_RR = 3;
 	//giatsos
 	protected final static short RATIO = 4;
-
+	protected short counter;
+	protected Boolean computed;
+	protected final List<List<String>> allMembers = new ArrayList<>();
+	protected final List<String> allValues = new ArrayList<>();
+	
 	protected String vipId;
 
 	protected int previousMemberIndex;
+
 
 	public LBPool() {
 		id = String.valueOf((int) (Math.random()*10000));
@@ -75,6 +81,9 @@ public class LBPool {
 		adminState = 0;
 		status = 0;
 		previousMemberIndex = -1;
+		//giatsos
+		counter = -1;
+		computed = false;
 	}
 
 	public String pickMember(IPClient client, HashMap<String,U64> membersBandwidth,HashMap<String,Short> membersWeight) {
@@ -132,9 +141,13 @@ public class LBPool {
 			} else if(lbMethod == RATIO && !membersWeight.isEmpty()){
 				log.info("mpike!!!");
 				
-				Boolean computed = false;
+				//Boolean computed = false;
+				//final List<List<String>> allMembers = new ArrayList<>();
+				//final List<String> allValues = new ArrayList<>();
+				//short counter = -1;
 				
-				if (computed = false) {
+				if (computed == false) {
+					log.info("computed = false");
 					short totalWeight = 0; 
 
 					for(Short weight: membersWeight.values()){
@@ -148,50 +161,53 @@ public class LBPool {
 					else {
 						log.info("total weight OK! go on with calc");
 						//gia olous tous members get id
-						/*for(String memberId: membersWeight.keySet()){
+						//final List<List<String>> allMembers = new ArrayList<>();
+						for (String memberId : membersWeight.keySet()) {
 							//create list for each member
-							List array(membersWeight.get(memberId)) = new ArrayList();
-							//for(int i=0; i<membersWeight.values(); i++){
-							for(Short weight: membersWeight.values()){
+							List<String> array = new ArrayList<>();
+							for (int i = 0; i < membersWeight.get(memberId); i++) {
 								//gemizoume thn lista tou kathena me to id tou
-                                                                log.info("weight {}", weight );
-								array(membersWeight.get(memberId)).add(membersWeight.get(memberId));
+								array.add(memberId);
+								log.info("mpike sthn lista to {}", memberId);
 							}
-						}*/
+							//vazoume thn lista tou member sthn synolikh lista
+							allMembers.add(array);
+						}
+
 					}
 
-					//exoume listes me ta ids twn members
-					//kanoume mia nea lista pou tha valoume oles tis parapanw
-					/*List total = new ArrayList();
-					//loop through all members
-					for(String memberId: membersWeight.keySet()){
-						//pairnoume thn lista tou kathenos kai thn prosthetoume
-						total.addAll(membersWeight.get(memberId));
+					//metatrepw thn list of lists se mia lista
+					for (List<String> strings :allMembers) {
+						allValues.addAll(strings);
 					}
-
 					//anakatevoume thn lista gia na mhn einai omadopoihmenes oi anatheseis
-					//http://www.vogella.com/tutorials/JavaAlgorithmsShuffle/article.html
-
-					//print list
-					for(int i = 0; i < total.size(); i++){
-						log.info("final order {} , {}", i, total.get(i));
-					}*/
-
+					Collections.shuffle(allValues);
+					
+					//test code print list
+					log.info("h lista exei ta eksis");
+					for (String s :allValues) {
+						log.info("-- {}", s);
+					}
+					
+					
 					//change flag computed, now the next 10 destinations have been decided
-					//computed = true;
+					computed = true;
+					log.info("FLAG CHANGED to true");
+				}
+				
+				//epistrefei ton host
+				if (computed == true && counter<9 ){
+					counter++;
+					log.info("Member picked using RATIO: {} (counter: {})",allValues.get(counter), counter);
+					return allValues.get(counter);
 				}
 				else {
-					//epistrefei ton host
-					short counter = 0;
-					if (computed = true){
-						//log.info("Member picked using RATIO: {}",total[counter])
-						//return total[counter]
-						counter++;
-						if (counter>10){
-							computed = false;
-						}
-					}
+					computed = false;
+					counter = -1;
+					allValues.clear();
+					allMembers.clear();
 				}
+
 				return null;
 //giatsos
 			}else {
