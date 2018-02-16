@@ -63,6 +63,9 @@ public class LBPool {
 	protected Boolean computed;
 	protected final List<List<String>> allMembers = new ArrayList<>();
 	protected final List<String> allValues = new ArrayList<>();
+	protected int counter1;
+	protected int counter2;
+	protected int counter3;
 	
 	protected String vipId;
 
@@ -84,17 +87,20 @@ public class LBPool {
 		//giatsos
 		counter = -1;
 		computed = false;
+		counter1 = 0;
+		counter2 = 0;
+		counter3 = 0;
 	}
 
 	public String pickMember(IPClient client, HashMap<String,U64> membersBandwidth,HashMap<String,Short> membersWeight) {
-		log.info("members.size() {}",members.size());
+		//log.info("members.size() {}",members.size());
 
 		// Get the members that belong to this pool and the statistics for them
 		if(members.size() > 0){
-			log.info("lbMethod {}",lbMethod);
-			log.info("membersBandwidth.isEmpty() {}",membersBandwidth.isEmpty());
-			log.info("membersBandwidth.values() {}",membersBandwidth.values());
-			log.info("membersWeight.isEmpty() {}",membersWeight.isEmpty());
+			//log.info("lbMethod {}",lbMethod);
+			//log.info("membersBandwidth.isEmpty() {}",membersBandwidth.isEmpty());
+			//log.info("membersBandwidth.values() {}",membersBandwidth.values());
+			//log.info("membersWeight.isEmpty() {}",membersWeight.isEmpty());
 			
 			if (lbMethod == STATISTICS && !membersBandwidth.isEmpty() && membersBandwidth.values() !=null) {
 				ArrayList<String> poolMembersId = new ArrayList<String>();
@@ -133,49 +139,45 @@ public class LBPool {
 					log.info("val {}",val);
 					if(val > rand){
 						log.info("Member picked using WRR: {}",memberId);
+						//if (memberId.equals("21") ){ counter1++; }
+						//else if (memberId.equals("22") ){ counter2++; }
+						//else if (memberId.equals("23") ){ counter3++; }
+						//log.info("first {} second {}", counter1, counter2);
+						//log.info("third {} ", counter3);
 						return memberId;
 					}
 				}
 				return null;
 //giatsos
 			} else if(lbMethod == RATIO && !membersWeight.isEmpty()){
-				log.info("mpike!!!");
-				
-				//Boolean computed = false;
-				//final List<List<String>> allMembers = new ArrayList<>();
-				//final List<String> allValues = new ArrayList<>();
-				//short counter = -1;
-				
+				//log.info("mpike!!!");
 				if (computed == false) {
-					log.info("computed = false");
+					//log.info("computed = false");
 					short totalWeight = 0; 
 
 					for(Short weight: membersWeight.values()){
 						totalWeight += weight;
 					}
-					log.info("totalWeight {}",totalWeight);
+					//log.info("totalWeight {}",totalWeight);
 					if (totalWeight >10 || totalWeight <10 ) {
 						//normalize
 						log.info("normalizing...");
 					}
 					else {
-						log.info("total weight OK! go on with calc");
+						//log.info("total weight OK! go on with calc");
 						//gia olous tous members get id
-						//final List<List<String>> allMembers = new ArrayList<>();
 						for (String memberId : membersWeight.keySet()) {
 							//create list for each member
 							List<String> array = new ArrayList<>();
 							for (int i = 0; i < membersWeight.get(memberId); i++) {
 								//gemizoume thn lista tou kathena me to id tou
 								array.add(memberId);
-								log.info("mpike sthn lista to {}", memberId);
+								//log.info("mpike sthn lista to {}", memberId);
 							}
 							//vazoume thn lista tou member sthn synolikh lista
 							allMembers.add(array);
 						}
-
 					}
-
 					//metatrepw thn list of lists se mia lista
 					for (List<String> strings :allMembers) {
 						allValues.addAll(strings);
@@ -188,17 +190,21 @@ public class LBPool {
 					for (String s :allValues) {
 						log.info("-- {}", s);
 					}
-					
-					
+
 					//change flag computed, now the next 10 destinations have been decided
 					computed = true;
-					log.info("FLAG CHANGED to true");
+					//log.info("FLAG CHANGED to true");
 				}
-				
+
 				//epistrefei ton host
 				if (computed == true && counter<9 ){
 					counter++;
 					log.info("Member picked using RATIO: {} (counter: {})",allValues.get(counter), counter);
+					//if (allValues.get(counter).equals("41") ){ counter1++;	}
+					//else if (allValues.get(counter).equals("42") ){ counter2++; }
+					//else if (allValues.get(counter).equals("43") ){ counter3++; }
+					//log.info("first {} second {}", counter1, counter2);
+					//log.info("third {} ", counter3);
 					return allValues.get(counter);
 				}
 				else {
@@ -207,7 +213,6 @@ public class LBPool {
 					allValues.clear();
 					allMembers.clear();
 				}
-
 				return null;
 //giatsos
 			}else {
@@ -215,6 +220,7 @@ public class LBPool {
 				previousMemberIndex = (previousMemberIndex + 1) % members.size();
 				log.info("Member picked using simple round robin: {}",previousMemberIndex);
 				return members.get(previousMemberIndex);
+				
 			}
 		}
 		return null;
